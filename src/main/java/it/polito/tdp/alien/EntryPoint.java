@@ -1,23 +1,33 @@
 package it.polito.tdp.alien;
 
+import it.polito.tdp.alien.model.Dizionario;
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class EntryPoint extends Application {
 
-    @Override
+	@Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+    	
+    	/**MODEL:**/
+    	Dizionario model = new Dizionario();
+    	
+    	/**LOADER E CONTROLLER:**/
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+        Parent root = loader.load();
+      
+        FXMLController controller = loader.getController();
         
+        /**INVOCAZIONE DEL METODO setModel() DELLA CLASSE FXMLControlller:**/
+        controller.setModel(model);
+
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
-        scene.getRoot().setStyle("-fx-font-family: 'Comic Sans MS'");
-
+        
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();

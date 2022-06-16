@@ -1,14 +1,10 @@
-/**
- * Sample Skeleton for 'Scene.fxml' Controller Class
- */
-
 package it.polito.tdp.alien;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import it.polito.tdp.alien.model.Dictionary;
+import it.polito.tdp.alien.model.Dizionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,112 +12,121 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class FXMLController {
+
+	/**ATTRIBUTO DI RIFERIMENTO AL MODEL:**/
+	private Dizionario model; 
 	
-	private Dictionary dictionary = new Dictionary();
 	
-    @FXML // ResourceBundle that was given to the FXMLLoader
+    @FXML
     private ResourceBundle resources;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
+    @FXML
     private URL location;
 
-    @FXML // fx:id="lblTesto"
-    private TextField lblTesto; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnTranslate"
-    private Button btnTranslate; // Value injected by FXMLLoader
-
-    @FXML // fx:id="txtResult"
-    private TextArea txtResult; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnReset"
-    private Button btnReset; // Value injected by FXMLLoader
+    @FXML
+    private Button btnCancella;
+    
+    @FXML
+    private Button btnTraduci;
 
     @FXML
-    void doReset(ActionEvent event) {
-    	lblTesto.clear();
-    	txtResult.clear();
-    }
+    private TextField txtInserito;
 
     @FXML
-    void doTranslate(ActionEvent event) {
+    private TextArea txtTraduzione;
+
+    
+    
+    @FXML
+    void doCancella(ActionEvent event) {
     	
-		txtResult.clear();
-		String riga = lblTesto.getText().toLowerCase();
+    	txtInserito.clear();
+    	txtTraduzione.clear();
+    }
+    
+    
+    @FXML
+    void doTraduzione(ActionEvent event) {
+    	
+    	/**1.ACQUISIZIONE E CONTROLLO DATI:*/
+    	
+		String inserito = txtInserito.getText().toLowerCase();
 
-		// Controllo sull'input
-		if (riga == null || riga.length() == 0) {
-			txtResult.setText("Inserire una o due parole.");
+		if(inserito == "") {
+		txtTraduzione.setText("ERRORE:\nInserire la parola aliena (e la sua traduzione).");
 			return;
 		}
 
-		StringTokenizer st = new StringTokenizer(riga, " ");
-
-		// Controllo su String Tokenizer (superfluo)
-		if (!st.hasMoreElements()) {
-			txtResult.setText("Inserire una o due parole.");
-			return;
-		}
-
-		// Estraggo la prima parola
-		String alienWord = st.nextToken();
-
+		//Scomposizione della stringa inserita in parole distinte,
+		//che vengono salvate in un elemento StringTokenizer st:
+		StringTokenizer st = new StringTokenizer(inserito, " ");
+	
+		//Estrazione della prima parola contenuta in st.
+		//E salvataggio in una stringa parolaAliena:
+		String parolaAliena = st.nextToken();
+		
+		//Se in st vi sono più parole, quindi è stata data anche la traduzione,
+		//la parolaAliena e la sua traduzione devono essere aggiunte al dizionario:
 		if (st.hasMoreTokens()) {
-			// Devo inserire parola e traduzione nel dizionario
+		
+			//Estrazione della seconda parola contenuta in st.
+			//E salvataggio in una stringa traduzione:
+			String traduzione = st.nextToken();
 
-			// Estraggo la seconda parola
-			String translation = st.nextToken();
-
-			if (!alienWord.matches("[a-zA-Z]*") || !translation.matches("[a-zA-Z]*")) {
-				txtResult.setText("Inserire solo caratteri alfabetici.");
+			//Controllo della correttezza di parolaAliena e traduzione:
+			if (!parolaAliena.matches("[a-z A-Z]*") || !traduzione.matches("[a-z A-Z]*")) {
+				txtTraduzione.setText("ERRORE:\nInserire solo caratteri alfabetici.");
 				return;
 			}
 
-			// Aggiungo la parola aliena e traduzione nel dizionario
-			this.dictionary.addWord(alienWord, translation);
 			
-			txtResult.setText("La parola: \"" + alienWord + "\", con traduzione: \"" + translation + "\", è stata inserita nel dizionario.");
+			/**2.ESECUZIONE DELL'OPERAZIONE DI AGGIUNTA (MODEL):*/
+			model.addParola(parolaAliena, traduzione);
 
+			
+			/**3.VISUALIZZAZIONE7AGGIORNAMENTO DEL RISULTATO:*/
+			txtTraduzione.setText("La parola "+parolaAliena+" con traduzione "+traduzione+" \nè stata inserita nel dizionario.");
+
+		
+		//Se invece in st c'è solo una parola, quindi è stata data solo la parolaAliena, 
+		//la sua traduzione va cercata nel dizionario:
 		} else {
 
-			// Controllo che non ci siano caratteri non ammessi
-			if (!alienWord.matches("[a-zA-Z?]*")) {
-				txtResult.setText("Inserire solo caratteri alfabetici.");
+			//Controllo della correttezza della parola:
+			if (!parolaAliena.matches("[a-z A-Z]*")) {
+				txtTraduzione.setText("ERRORE:\nInserire solo caratteri alfabetici.");
 				return;
 			}
 
-			String translation;
 			
-			if (alienWord.matches("[a-zA-Z?]*") && !alienWord.matches("[a-zA-Z]*")) {
-
-				// Traduzione con WildCard
-				translation = this.dictionary.translateWordWildCard(alienWord);
-
-			} else {
-
-				// Traduzione classica
-				translation = this.dictionary.translate(alienWord);
-			}
+			/**2.ESECUZIONE DELL'OPERAZIONE DI AGGIUNTA (MODEL):*/
+			String traduzione = model.translateParola(parolaAliena);
 			
-
-			if (translation != null) {
-				txtResult.setText(translation);
-			} else {
-				txtResult.setText("La parola cercata non esiste nel dizionario.");
-			}
+			
+			/**3.VISUALIZZAZIONE/AGGIORNAMENTO DEL RISULTATO:*/
+			if (traduzione != null) 
+				txtTraduzione.setText("La traduzione della parola "+parolaAliena+" è "+traduzione+".");
+			else 
+				txtTraduzione.setText("La parola cercata non esiste nel dizionario.");
 		}
-    	
-    	
-
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    
+    
+    /**DEFINIZIONE METODO setModel():**/
+    /**PER ASSOCIARE IL MODEL ALL' ATTRIBUTO DI RIFERIMENTO.**/
+    public void setModel(Dizionario model) {
+		this.model = model;
+	}
+
+
+
+	@FXML
     void initialize() {
-        assert lblTesto != null : "fx:id=\"lblTesto\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert btnTranslate != null : "fx:id=\"btnTranslate\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert btnReset != null : "fx:id=\"btnReset\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert btnTraduci != null : "fx:id=\"btnTraduci\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert txtInserito != null : "fx:id=\"txtParola\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert txtTraduzione != null : "fx:id=\"txtTraduzione\" was not injected: check your FXML file 'Scene.fxml'.";
 
     }
-}
 
+}

@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.alien.FXMLController">
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.alien.FXMLController">
    <top>
-      <Label text="Lab 2 - Alien Translator" BorderPane.alignment="CENTER">
+      <Label text="Lab02 - Dizionario Alieno:" textFill="#eb0909" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" />
+            <Insets />
          </BorderPane.margin>
          <font>
-            <Font name="System Bold" size="13.0" />
+            <Font size="20.0" />
          </font>
       </Label>
    </top>
@@ -25,37 +25,37 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <center>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox spacing="5.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="99.0" text="Alien Text">
-                     <padding>
-                        <Insets left="10.0" right="5.0" />
-                     </padding>
+                  <Label text="Parola aliena:">
                      <HBox.margin>
-                        <Insets right="10.0" top="20.0" />
+                        <Insets top="4.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="lblTesto" prefHeight="25.0" prefWidth="242.0" promptText="Insert text...">
+                  <TextField fx:id="txtInserito" onAction="#doTraduzione" promptText="&lt;parola&gt; &lt;traduzione&gt;">
                      <HBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnTranslate" mnemonicParsing="false" onAction="#doTranslate" text="Translate">
+                  <Button fx:id="btnTraduci" mnemonicParsing="false" onAction="#doTraduzione" text="Traduci">
                      <HBox.margin>
-                        <Insets left="10.0" top="20.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <TextArea fx:id="txtResult" prefHeight="156.0" prefWidth="493.0" promptText="Welcome to Alien Dictionary v2022.." />
-            <Button fx:id="btnReset" mnemonicParsing="false" onAction="#doReset" text="Clear Text">
+            <TextArea fx:id="txtTraduzione" prefHeight="100.0" prefWidth="200.0" promptText="... dizionario alieno ..." />
+            <Button fx:id="btnCancella" mnemonicParsing="false" onAction="#doCancella" text="Cancella">
                <VBox.margin>
-                  <Insets left="400.0" top="5.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>
