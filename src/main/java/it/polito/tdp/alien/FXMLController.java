@@ -85,7 +85,7 @@ public class FXMLController {
 
 			
 			/**3.VISUALIZZAZIONE7AGGIORNAMENTO DEL RISULTATO:*/
-			txtTraduzione.setText("La parola "+parolaAliena+" con traduzione "+traduzione+" \nè stata inserita nel dizionario.");
+			txtTraduzione.setText("La parola _"+parolaAliena+"_ con traduzione _"+traduzione+"_ \nè stata inserita nel dizionario.");
 
 		
 		//Se invece in st c'è solo una parola, quindi è stata data solo la parolaAliena, 
@@ -105,7 +105,7 @@ public class FXMLController {
 			
 			/**3.VISUALIZZAZIONE/AGGIORNAMENTO DEL RISULTATO:*/
 			if (traduzione != null) 
-				txtTraduzione.setText("La traduzione della parola "+parolaAliena+" è "+traduzione+".");
+				txtTraduzione.setText("Le traduzioni della parola _"+parolaAliena+"_ sono:\n"+traduzione);
 			else 
 				txtTraduzione.setText("La parola cercata non esiste nel dizionario.");
 		}
@@ -114,7 +114,7 @@ public class FXMLController {
     
     
     /**DEFINIZIONE METODO setModel():**/
-    /**PER ASSOCIARE IL MODEL ALL' ATTRIBUTO DI RIFERIMENTO.**/
+    /**PER ASSOCIARE IL MODEL ALL'ATTRIBUTO DI RIFERIMENTO.**/
     public void setModel(Dizionario model) {
 		this.model = model;
 	}

@@ -1,19 +1,23 @@
 package it.polito.tdp.alien.model;
 
+import java.util.HashSet;
+import java.util.Set;
 
 public class Parola {
 
 	//ATTRIBUTI:
 	private String parolaAliena;
-	private String traduzione;
+	private Set<String> traduzioni;
+	
 	
 	
 	//COSTRUTTORE:
-	public Parola(String parolaAliena, String traduzione) {
+	public Parola(String parolaAliena) {
 		
 		this.parolaAliena = parolaAliena;
-		this.traduzione = traduzione;
+		this.traduzioni = new HashSet<>();
 	}
+	
 	
 	
 	//METODI:
@@ -22,18 +26,26 @@ public class Parola {
 		return parolaAliena;
 	}
 
+	
 	public void setParolaAliena(String p) {
 		this.parolaAliena = p;
 	}
 	
 	
-	public String getTraduzione() {
-		return traduzione;
+	public String getTraduzioni() {
+		
+		String s = "";
+			
+		for (String t : traduzioni)
+			s = s + t + "\n";
+			
+		return s;
+	}
+	
+
+	public void addTraduzione(String t) {
+		traduzioni.add(t);
 	}
 
-	public void setTraduzione(String t) {
-		this.traduzione = t;
-	}
-	
-	
+
 }
